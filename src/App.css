@@ -1,0 +1,9 @@
+.text-shadow-white {
+    @apply transition-all duration-200;
+    text-shadow: #fff 0 0 .15em;
+
+    &:hover {
+        text-shadow: #fff 0 0 .35em;
+        cursor: pointer;
+    }
+}
