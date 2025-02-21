@@ -35,6 +35,7 @@ export default function StormManagement() {
                 isOpen={isModalOpen}
                 setOpen={(isOpen) => setIsModalOpen(isOpen)}
                 title={'Customize your storm'}
+                showCloseButton
             >
                 <div className={'mb-10'}>
                     <span className={'block'}>Storm</span>

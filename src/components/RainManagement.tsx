@@ -21,6 +21,7 @@ export default function RainManagement() {
                 isOpen={isModalOpen}
                 setOpen={(isOpen) => setIsModalOpen(isOpen)}
                 title={'Customize your rain'}
+                showCloseButton
             >
                 <div className={'mb-10'}>
                     <span className={'block'}>Rain</span>

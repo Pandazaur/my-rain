@@ -15,6 +15,10 @@ export default function App() {
     }, [isPlaying])
 
     const dropCount = useMemo(() => {
+        if (!isPlaying) {
+            return 0
+        }
+
         switch (playedRain.key) {
             case 'none':
                 return 0
@@ -25,17 +29,17 @@ export default function App() {
             case 'heavy':
                 return 2000
         }
-    }, [playedRain])
+    }, [playedRain, isPlaying])
 
     return (
         <div className={'bg-slate-900 text-white relative'}>
             <div className={'absolute inset-0'}>
                 <Rain2 dropCount={dropCount} />
             </div>
-            <div className={'px-20 py-20 flex flex-col min-h-screen h-full flex-1 relative'}>
+            <div className={'px-6 py-10 flex flex-col min-h-screen h-full flex-1 relative'}>
                 <div className={'flex-1'}>
                     <div className={'font-sour-gummy mb-20'}>
-                        <h1 className={'text-4xl'}>My Rain</h1>
+                        <h1 className={'text-4xl text-shadow-white'}>My Rain</h1>
                         <p>Personalize your rain. Make it perfect for you.</p>
                     </div>
 
