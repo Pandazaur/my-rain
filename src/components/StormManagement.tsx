@@ -5,9 +5,9 @@ import LightStorm from '../assets/sounds/storm/storm_light_1.mp3'
 import useStorms from '../hooks/useStorms.ts'
 import { getRandomInt } from '../utils/numbers.ts'
 
-type StormIntensity = 'none' | 'light'
+export type StormIntensity = 'none' | 'light'
 
-const STORM_CHOICES: StormIntensity[] = ['none', 'light']
+export const STORM_CHOICES: StormIntensity[] = ['none', 'light']
 const MIN_SECONDS_BETWEEN_STORMS = 30
 const MAX_SECONDS_BETWEEN_STORMS = 90
 

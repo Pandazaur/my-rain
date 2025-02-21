@@ -1,15 +1,21 @@
-import React, { useMemo, useState } from 'react'
+import { Howler } from 'howler'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import Rain2 from './components/Rain2.tsx'
-import RainManagement, { RainIntensity } from './components/RainManagement.tsx'
+import RainManagement from './components/RainManagement.tsx'
 import StormManagement from './components/StormManagement.tsx'
+import useRainStore from './stores/useRainStore.ts'
 
 export default function App() {
     const [isPlaying, setIsPlaying] = useState(false)
-    const [rain, setRain] = useState<RainIntensity>('none')
+    const { playedRain } = useRainStore()
+
+    useEffect(() => {
+        Howler.volume(isPlaying ? 1 : 0)
+    }, [isPlaying])
 
     const dropCount = useMemo(() => {
-        switch (rain) {
+        switch (playedRain.key) {
             case 'none':
                 return 0
             case 'umbrella':
@@ -19,7 +25,7 @@ export default function App() {
             case 'heavy':
                 return 2000
         }
-    }, [rain])
+    }, [playedRain])
 
     return (
         <div className={'bg-slate-900 text-white relative'}>
@@ -34,10 +40,7 @@ export default function App() {
                     </div>
 
                     <div className={'flex flex-col gap-6'}>
-                        <RainManagement
-                            isPlaying={isPlaying}
-                            onRainChange={(rainIntensity) => setRain(rainIntensity)}
-                        />
+                        <RainManagement isPlaying={isPlaying} />
                         <StormManagement isPlaying={isPlaying} />
                     </div>
                 </div>

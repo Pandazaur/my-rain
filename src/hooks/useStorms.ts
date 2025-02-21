@@ -46,8 +46,6 @@ export default function useStorms() {
     const playRandomHowl = () => {
         const randomIndex = getRandomInt(0, storms.length - 1)
 
-        console.log({ randomIndex })
-
         storms[randomIndex].play()
     }
 

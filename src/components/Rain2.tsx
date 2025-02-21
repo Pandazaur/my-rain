@@ -120,7 +120,5 @@ export default function Rain2(props: Props) {
         setParticles(particles.filter((p) => p.xs && p.ys && p.l))
     }
 
-    console.log(particles.length)
-
     return <canvas ref={canvasRef} className="w-full h-full" />
 }
