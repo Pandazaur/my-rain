@@ -77,6 +77,7 @@ const useRainStore = create<Store>((set) => ({
         })
     },
     changeVolume: (volume: number) => {
+        console.log({ volume })
         set((state) => {
             if (state.playedRain.sound) {
                 state.playedRain.sound.volume(volume)

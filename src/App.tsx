@@ -7,7 +7,7 @@ import StormManagement from './components/StormManagement.tsx'
 import useRainStore from './stores/useRainStore.ts'
 
 export default function App() {
-    const [isPlaying, setIsPlaying] = useState(false)
+    const [isPlaying, setIsPlaying] = useState(true)
     const { playedRain } = useRainStore()
 
     useEffect(() => {
@@ -40,8 +40,8 @@ export default function App() {
                     </div>
 
                     <div className={'flex flex-col gap-6'}>
-                        <RainManagement isPlaying={isPlaying} />
-                        <StormManagement isPlaying={isPlaying} />
+                        <RainManagement />
+                        <StormManagement />
                     </div>
                 </div>
 

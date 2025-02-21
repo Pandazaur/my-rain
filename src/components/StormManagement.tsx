@@ -1,57 +1,70 @@
-import { useEffect, useRef, useState } from 'react'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { useState } from 'react'
 import { useInterval } from 'react-use'
-import ClassicStorm from '../assets/sounds/storm/storm_classic_1.mp3'
-import LightStorm from '../assets/sounds/storm/storm_light_1.mp3'
-import useStorms from '../hooks/useStorms.ts'
+import useStormStore, { type StormKey } from '../stores/useStormStore.ts'
 import { getRandomInt } from '../utils/numbers.ts'
+import BottomModal from './BottomModal.tsx'
+import ElasticSlider from './reactbits/ElasticSlider/ElasticSlider.tsx'
 
-export type StormIntensity = 'none' | 'light'
-
-export const STORM_CHOICES: StormIntensity[] = ['none', 'light']
+export const STORM_CHOICES: StormKey[] = ['none', 'light']
 const MIN_SECONDS_BETWEEN_STORMS = 30
 const MAX_SECONDS_BETWEEN_STORMS = 90
 
-type Props = {
-    isPlaying?: boolean
-}
-
-export default function StormManagement(props: Props) {
-    const audioSource = useRef(new Audio())
-    const [selectedStormChoice, selectStormChoice] = useState<StormIntensity | null>(STORM_CHOICES[0])
+export default function StormManagement() {
+    const [selectedStormChoice, selectStormChoice] = useState<StormKey | null>(STORM_CHOICES[0])
     const [delayAfterNextStorm, setDelayAfterNextStorm] = useState(MIN_SECONDS_BETWEEN_STORMS)
-    const { playRandomHowl } = useStorms()
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    useEffect(() => {
-        audioSource.current.loop = true
-    }, [])
+    const { playRandomStorm, changeVolume, stormVolume } = useStormStore()
 
     useInterval(
         () => {
-            playRandomHowl()
+            playRandomStorm()
             setDelayAfterNextStorm(getRandomInt(MIN_SECONDS_BETWEEN_STORMS, MAX_SECONDS_BETWEEN_STORMS) * 1000)
         },
-        props.isPlaying && selectedStormChoice !== 'none' ? delayAfterNextStorm : null,
+        selectedStormChoice !== 'none' ? delayAfterNextStorm : null,
     )
-
-    console.log(delayAfterNextStorm)
-
-    // useEffect(() => {}, [props.isPlaying, selectedStormChoice])
 
     return (
         <div>
-            <span className={'block'}>Storm</span>
-            <select
-                value={selectedStormChoice}
-                onInput={(e) => {
-                    selectStormChoice((e.target as HTMLSelectElement).value as StormIntensity)
-                }}
+            <button onClick={() => setIsModalOpen(true)} className={'text-2xl font-medium flex items-center gap-4'}>
+                Storm
+                <ChevronRightIcon className={'w-6'} />
+            </button>
+            <BottomModal
+                isOpen={isModalOpen}
+                setOpen={(isOpen) => setIsModalOpen(isOpen)}
+                title={'Customize your storm'}
             >
-                {STORM_CHOICES.map((rainIntensity) => (
-                    <option value={rainIntensity} key={rainIntensity}>
-                        {rainIntensity}
-                    </option>
-                ))}
-            </select>
+                <div className={'mb-10'}>
+                    <span className={'block'}>Storm</span>
+                    <select
+                        value={selectedStormChoice as string}
+                        onInput={(e) => {
+                            selectStormChoice((e.target as HTMLSelectElement).value as StormKey)
+                        }}
+                    >
+                        {STORM_CHOICES.map((rainIntensity) => (
+                            <option value={rainIntensity} key={rainIntensity}>
+                                {rainIntensity}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div>
+                    <span className={'block mb-2'} onClick={() => setIsModalOpen(true)}>
+                        Volume
+                    </span>
+                    <ElasticSlider
+                        startingValue={0}
+                        defaultValue={stormVolume * 100}
+                        maxValue={100}
+                        onChange={(newVolume) => {
+                            changeVolume(newVolume / 100)
+                        }}
+                    />
+                </div>
+            </BottomModal>
         </div>
     )
 }

@@ -18,5 +18,5 @@ body,
 }
 
 select {
-    @apply rounded-lg py-2 px-4 mt-1 bg-slate-800;
+    @apply rounded-lg py-2 px-4 mt-1 border border-slate-600 bg-slate-900;
 }
